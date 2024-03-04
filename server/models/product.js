@@ -11,10 +11,14 @@ const productSchema = new Schema({
     }, status: {
         type: String,
         required: false,
+        default: "active"
     }, description: {
         type: String,
         required: false,
-    }
+    }, reviews: [{
+        name: String,
+        rating: Number,
+    }]
 }, {timestamps: true});
 
 module.exports = mongoose.model('Product', productSchema);
