@@ -1,10 +1,12 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
-const productRoute = require('./routes/product');
 
 const app = express();
+const productRoute = require('./routes/product');
 
+// middleware
+app.use(express.json());
 app.use('/api/product', productRoute);
 
 mongoose.connect(process.env.MONG_URI).then(() => {

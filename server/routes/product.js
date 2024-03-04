@@ -1,9 +1,9 @@
 const express = require('express');
+const { getProducts, postProduct } = require('../controllers/productController');
 
 const router = express.Router();
 
-router.get('/',(req,res)=> {
-    res.status(200).json({'msg':'router working'});
-})
+router.get('/', getProducts);
+router.post('/', postProduct);
 
 module.exports = router;
