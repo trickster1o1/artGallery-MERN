@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     user: {
-        val: localStorage.getItem('user') ? localStorage.getItem('user') : 1,
+        val: localStorage.getItem('user') ? Number(localStorage.getItem('user')) : 1,
     },
 };
 

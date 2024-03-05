@@ -10,6 +10,7 @@ function App() {
         localStorage.setItem('user',user.val +1);
         dispatch(login(1));
       } else {
+        localStorage.setItem('user',user.val -1);
         dispatch(logout(1))
       }
 
