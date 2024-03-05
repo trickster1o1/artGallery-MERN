@@ -18,6 +18,11 @@ const productSchema = new Schema({
     }, reviews: [{
         name: String,
         rating: Number,
+        review: String,
+        status: {
+            type: String,
+            default: "active"
+        }
     }]
 }, {timestamps: true});
 

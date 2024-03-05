@@ -50,14 +50,16 @@ const deleteProduct = async (req,res) => {
 
 const updateProduct = async (req, res) => {
     const { id } = req.params;
+    const {price,description,title} = req.body;
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({msg: 'Product Not Found! '+id});
     }
     try {
-        const product = await Product.findOneAndUpdate({_id:id}, { ...req.body});
+        const product = await Product.findOneAndUpdate({_id:id}, { $set: {price,description,title} });
         if(!product) {
             return res.status(400).json({msg: 'Product Not Found! '+id});
         }
+       
         res.status(200).json(product);
     } catch (error) {
         res.status(400).json({error: error.message})
