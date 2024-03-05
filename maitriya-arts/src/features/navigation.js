@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = '/';
+const initialState = '/navigation';
 
 export const navSlice = createSlice({
     name: 'nav',

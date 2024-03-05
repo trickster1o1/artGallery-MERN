@@ -3,6 +3,7 @@ import { login, logout } from "./features/user";
 
 function App() {
   const user = useSelector((state)=>state.userReducer.user);
+  const nav = useSelector((state) => state.navReducer);
   const dispatch = useDispatch();
 
   const eveHand = (hand) => {
@@ -22,6 +23,7 @@ function App() {
       <button onClick={()=>eveHand('inc')}>Inc</button>
       <div>{user.val}</div>
       <button onClick={()=>eveHand('dec')}>Dec</button>
+      <div>{nav}</div>
     </div>
   );
 }
