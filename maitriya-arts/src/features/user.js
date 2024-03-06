@@ -16,7 +16,7 @@ export const userSlice = createSlice({
             };
         }, logout: (state,action)=>{
             state.user = {
-                val: state.user.val === 1 ? state.user.val : state.user.val - action.payload 
+                val: state.user.val <= 1 ? 1 : state.user.val - action.payload 
             };
         }
     }
