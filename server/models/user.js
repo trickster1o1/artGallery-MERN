@@ -51,6 +51,7 @@ userSchema.statics.signup = async function ({email, password, name, phone, usern
 }
 
 userSchema.statics.login = async function({email, password}) {
+
     if(!email || !password) {
         return {msg: 'error', message: 'Please fill all the fields'};
     }

@@ -1,30 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "./features/user";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Header from "./components/Header";
+import Login from "./pages/Login";
+import { useSelector } from "react-redux";
 
 function App() {
   const user = useSelector((state)=>state.userReducer.user);
-  const nav = useSelector((state) => state.navReducer);
-  const dispatch = useDispatch();
-
-  const eveHand = (hand) => {
-      if(hand === 'inc') {
-        localStorage.setItem('user',user.val +1);
-        dispatch(login(1));
-      } else {
-        localStorage.setItem('user',user.val -1);
-        dispatch(logout(1))
-      }
-
-      console.log(user);
-  }
-
   return (
-    <div className="App">
-      <button onClick={()=>eveHand('inc')}>Inc</button>
-      <div>{user.val}</div>
-      <button onClick={()=>eveHand('dec')}>Dec</button>
-      <div>{nav}</div>
-    </div>
+    <BrowserRouter>
+    <Header />
+      <div className="container pt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to='/' />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
