@@ -48,6 +48,11 @@ const deleteProduct = async (req,res) => {
     }
 }
 
+const deleteAll = async (req, res) => {
+    const prod = await Product.deleteMany({});
+    res.status(400).json(prod);
+}
+
 const updateProduct = async (req, res) => {
     const { id } = req.params;
     const {price,description,title} = req.body;
@@ -66,4 +71,4 @@ const updateProduct = async (req, res) => {
     }
 }
 
-module.exports = { getProducts, postProduct, deleteProduct, updateProduct, productDetail };
+module.exports = { getProducts, postProduct, deleteProduct, updateProduct, productDetail, deleteAll };

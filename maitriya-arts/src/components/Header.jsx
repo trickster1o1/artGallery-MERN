@@ -2,6 +2,7 @@ import { Container, Navbar, Form, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/user";
+import art from '../assets/web.png';
 
 export default function Header() {
     const user = useSelector(state => state.userReducer.user);
@@ -14,8 +15,15 @@ export default function Header() {
     <Navbar bg={"dark"}>
       <Container fluid>
         <Navbar.Brand className="text-light">
-          <Link className="text-light text-decoration-none" to={"/"}>
-            MaitreyaArts
+          <Link className="text-light text-decoration-none d-flex align-items-center" to={"/"}>
+          <img
+              src={art}
+              width="50"
+              height="50"
+              className="d-inline-block align-top"
+              alt="React Bootstrap logo"
+            />
+            <span>MaitreyaArts</span>
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle />
@@ -34,7 +42,7 @@ export default function Header() {
             <Nav.Link className="text-light">
               {" "}
               <Link className="text-light text-decoration-none" onClick={userLogout}>
-                {user.email}
+                {user.username}
               </Link>
             </Nav.Link>
           </Nav> : <Nav>

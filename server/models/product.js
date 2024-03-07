@@ -8,6 +8,9 @@ const productSchema = new Schema({
     }, price: {
         type: String,
         required: true,
+    }, image: {
+        type: String,
+        required: false,
     }, status: {
         type: String,
         required: false,
@@ -21,7 +24,7 @@ const productSchema = new Schema({
         review: String,
         status: {
             type: String,
-            default: "active"
+            default: "inactive"
         }
     }]
 }, {timestamps: true});
