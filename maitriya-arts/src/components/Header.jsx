@@ -45,6 +45,12 @@ export default function Header() {
                 {user.username}
               </Link>
             </Nav.Link>
+            <Nav.Link className="text-light">
+              {" "}
+              <Link className="text-light text-decoration-none" to={'/upload'}>
+                AdminPanel
+              </Link>
+            </Nav.Link>
           </Nav> : <Nav>
             <Nav.Link className="text-light">
               {" "}
