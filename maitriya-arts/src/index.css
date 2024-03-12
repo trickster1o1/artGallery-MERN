@@ -13,4 +13,8 @@ code {
 } .custom-toaster {
   position: absolute;
   right: 1em;
+} .i-fit {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }

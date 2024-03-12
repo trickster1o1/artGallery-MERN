@@ -21,13 +21,14 @@ const productDetail = async (req, res) => {
 }
 
 const postProduct = async (req, res) => {
-  const { title, price, description, reviews } = req.body;
+  const { title, price, description, image } = req.body;
   try {
     const product = await Product.create({
       title,
       price,
+      image,
       description,
-      reviews
+      reviews: []
     });
     res.status(200).json(product);
   } catch (error) {
@@ -55,12 +56,12 @@ const deleteAll = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     const { id } = req.params;
-    const {price,description,title} = req.body;
+    const {price,description,title, image} = req.body;
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({msg: 'Product Not Found! '+id});
     }
     try {
-        const product = await Product.findOneAndUpdate({_id:id}, { $set: {price,description,title} });
+        const product = await Product.findOneAndUpdate({_id:id}, { $set: {image} });
         if(!product) {
             return res.status(400).json({msg: 'Product Not Found! '+id});
         }

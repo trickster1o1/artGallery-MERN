@@ -19,15 +19,15 @@ export default function Uploads() {
         <div className="custom-toaster">
           <ToastContainer className="position-static">
           <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
-            <Toast.Header>
+            <Toast.Header closeVariant="white" className="bg-success">
               {/* <img
                 src="holder.js/20x20?text=%20"
                 className="rounded me-2"
                 alt=""
               /> */}
-              <strong className="me-auto">Status</strong>
+              <strong className="me-auto text-light">Upload Success</strong>
             </Toast.Header>
-            <Toast.Body>Upload Success</Toast.Body>
+            {/* <Toast.Body className="text-light">Upload Success</Toast.Body> */}
           </Toast>
           
         </ToastContainer>
