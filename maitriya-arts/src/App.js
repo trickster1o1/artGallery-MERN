@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Login from "./pages/Login";
 import { useSelector } from "react-redux";
 import Uploads from "./pages/upload";
+import Register from "./pages/register";
 
 function App() {
   const user = useSelector((state)=>state.userReducer.user);
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<Uploads />} />
           <Route path="/login" element={!user ? <Login /> : <Navigate to='/' />} />
+          <Route path="/register" element={!user ? <Register /> : <Navigate to='/' />} />
         </Routes>
       </div>
     </BrowserRouter>

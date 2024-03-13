@@ -32,7 +32,7 @@ const userSignup = async (req, res) => {
     }
 
     const token = createToken(user._id);
-    return res.status(200).json({ email, token });
+    return res.status(200).json({ email, token, username });
   } catch (err) {}
 };
 

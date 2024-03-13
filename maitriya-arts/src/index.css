@@ -17,4 +17,28 @@ code {
   width: 100%;
   height: auto;
   object-fit: cover;
+} .price-span {
+  color: red;
+  font-weight: bold;
+  font-size: 15pt;
+} .btn-cont button{
+  margin-right: 5px;
+}.rating-cont {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em 0;
+} .feedback-cont textarea{
+  resize: none;
+  width: 100%;
+  margin-top: 5px;
+  border: .6px solid rgba(0,0,0,.2);
+  border-radius: 4px;
+  outline: none;
+} .custom-star {
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  cursor: pointer;
+} .star-un {
+  color: #e1e1e1;
+} .star-active {
+  color: yellowgreen;
 }

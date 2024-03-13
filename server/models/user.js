@@ -25,7 +25,7 @@ const userSchema = new Schema({
 
 
 userSchema.statics.signup = async function ({email, password, name, phone, username}){
-    if(!email || !password || !phone || !name || !username) {
+    if(!email || !password || !name || !username) {
         return {msg: 'error', message: 'Please fill all the fields'};
     }
 
