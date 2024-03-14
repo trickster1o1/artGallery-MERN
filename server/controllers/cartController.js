@@ -33,7 +33,7 @@ const deleteItem = async (req, res) => {
     if(!user) {
         return res.status(404).json({error: 'not found!'});
     }
-    res.status(200).json({msg: 'success', user});
+    res.status(200).json({msg: 'success', product_id});
 } 
 
 const clearCart = async (req, res) => {
