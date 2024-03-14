@@ -20,7 +20,16 @@ const userSchema = new Schema({
     }, password: {
         type: String,
         required: true
-    }
+    }, cart: [
+        {
+            product_id: String,
+            product: String,
+            price: Number,
+            quantity: Number,
+            image: String,
+            description: String
+        }
+    ]
 });
 
 
@@ -45,7 +54,7 @@ userSchema.statics.signup = async function ({email, password, name, phone, usern
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
-    const user = await this.create({email,name,phone,username,password:hash});
+    const user = await this.create({email,name,phone,username,password:hash, cart: []});
 
     return user;
 }
