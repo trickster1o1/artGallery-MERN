@@ -1,4 +1,4 @@
-import { Container, Navbar, Form, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Form, Nav, NavDropdown, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/user";
@@ -6,6 +6,7 @@ import art from "../assets/web.png";
 
 export default function Header() {
   const user = useSelector((state) => state.userReducer.user);
+  const cart = useSelector(state => state.cartReducer.cart);
   const dispatch = useDispatch();
   const userLogout = () => {
     localStorage.removeItem("user");
@@ -48,7 +49,7 @@ export default function Header() {
                   className="text-light text-decoration-none"
                   to={"/cart"}
                 >
-                  Cart
+                  Cart {cart.length ? <Badge bg="danger">{cart.length}</Badge> : null}
                 </Link>
               </Nav.Link>
               <NavDropdown menuVariant="dark" variant='dark' title={user.username} id="nav-dropdown-dark-example" style={{'color':'white'}}>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Spinner, Offcanvas } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
+import { useAddCart } from "../hooks/useAddCart";
+import ToasterAlert from "../components/ToasterAlert";
 
 export default function Home() {
   const user = useSelector((state) => state.userReducer.user);
@@ -13,8 +15,8 @@ export default function Home() {
   const [rowC, setRowC] = useState([]);
   const [show, setShow] = useState(false);
   const [rating, setRating] = useState(0);
-  const [fadeRating, setFadeRating] = useState(rating);
   const navigator = useNavigate();
+  const {error, buff, setCart} = useAddCart();
 
   // const mouseOverAction = (r, status) => {
   //   if(status) {
@@ -32,6 +34,10 @@ export default function Home() {
     } else {
       setRating(r);
     }
+  }
+
+  const addToCart = (id) => {
+    setCart(id , user.token);
   }
 
   function OffCan({ title, img, description, id, price, reviews }) {
@@ -53,7 +59,7 @@ export default function Home() {
           <span className="price-span">Rs.{price}</span>
           <div className="btn-cont">
             <button className={user ? "btn btn-danger" : "btn btn-secondary"} onClick={!user ? ()=>navigator('/login') : null}>Buy</button>
-            <button className={user ? "btn btn-primary" : "btn btn-secondary"}  onClick={!user ? ()=>navigator('/login') : null}>Cart</button>
+            <button className={user ? "btn btn-primary" : "btn btn-secondary"}  onClick={!user ? ()=>navigator('/login') : ()=>addToCart(id)}>Cart</button>
           </div>
           <div className="rating-cont">
             <span>Give your rating</span>
@@ -138,6 +144,7 @@ export default function Home() {
 
   return (
     <div>
+      <ToasterAlert />
       {loading ? (
         <div>
           <Spinner animation="grow" variant="dark" />
