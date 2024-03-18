@@ -18,6 +18,9 @@ const productSchema = new Schema({
     }, description: {
         type: String,
         required: false,
+    }, signature: {
+        type: String,
+        required: false,
     }, reviews: [{
         name: String,
         rating: Number,

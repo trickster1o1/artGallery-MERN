@@ -1,16 +1,23 @@
-import { Form, Row, Col, Card } from "react-bootstrap";
+import { Form, Row, Col, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 import { useState } from "react";
 export default function Login() {
-    const [data,setData] = useState({ email: '', password: '' });
-    const {error, loading, userLogin} = useLogin();
-    const loginUser = async (e) => {
-        e.preventDefault();
-        await userLogin(data);
-    }
+  const [data, setData] = useState({ email: "", password: "" });
+  const { error, loading, userLogin } = useLogin();
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const loginUser = async (e) => {
+    e.preventDefault();
+    await userLogin(data);
+  };
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex flex-column justify-content-center align-items-center">
+      {urlParams.get("session") ? (
+        <Alert key={"warning"} variant={"warning"} className="w-75">
+            Session expired! Please Login
+            </Alert>
+      ) : null}
       <Card className="w-75">
         <Card.Header>Login</Card.Header>
         <Card.Body>
@@ -24,7 +31,12 @@ export default function Login() {
                 Email
               </Form.Label>
               <Col sm="10">
-                <Form.Control type="email" placeholder="Email" value={data.email} onChange={(e)=>setData({...data, email: e.target.value})} />
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                />
               </Col>
             </Form.Group>
 
@@ -37,20 +49,30 @@ export default function Login() {
                 Password
               </Form.Label>
               <Col sm="10">
-                <Form.Control type="password" placeholder="Password" value={data.password} onChange={(e)=>setData({...data, password: e.target.value})} />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={data.password}
+                  onChange={(e) =>
+                    setData({ ...data, password: e.target.value })
+                  }
+                />
               </Col>
             </Form.Group>
-            {error && <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="formPlaintextEmail"
-            >
-              <Form.Label column sm="2"></Form.Label>
-              <Col sm="10"> <small className="error text-danger">{error}</small>
-              </Col>
-            </Form.Group>
-             }
-            
+            {error && (
+              <Form.Group
+                as={Row}
+                className="mb-3"
+                controlId="formPlaintextEmail"
+              >
+                <Form.Label column sm="2"></Form.Label>
+                <Col sm="10">
+                  {" "}
+                  <small className="error text-danger">{error}</small>
+                </Col>
+              </Form.Group>
+            )}
+
             <Form.Group
               as={Row}
               className="mb-3"
@@ -68,10 +90,18 @@ export default function Login() {
             >
               <Form.Label column sm="2"></Form.Label>
               <Col sm="10">
-                <button type="submit" className="btn btn-primary" disabled={loading}>Login</button><Link to={"/"} style={{'marginLeft':'10px'}}>Forgot Password?</Link> 
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={loading}
+                >
+                  Login
+                </button>
+                <Link to={"/"} style={{ marginLeft: "10px" }}>
+                  Forgot Password?
+                </Link>
               </Col>
             </Form.Group>
-
           </Form>
         </Card.Body>
       </Card>

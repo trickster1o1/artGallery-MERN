@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const mongoose = require("mongoose");
+const { createHash } = require('crypto');
 
 const getProducts = async (req, res) => {
   const products = await Product.find({}).sort({ createdAt: -1 });
@@ -28,6 +29,7 @@ const postProduct = async (req, res) => {
       price,
       image,
       description,
+      signature: createHash('sha256').update(title).digest('base64'),
       reviews: []
     });
     res.status(200).json(product);
