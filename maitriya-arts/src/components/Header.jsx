@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/user";
 import art from "../assets/web.png";
-
+import { useLogout } from "../hooks/useLogout";
 export default function Header() {
   const user = useSelector((state) => state.userReducer.user);
   const cart = useSelector(state => state.cartReducer.cart);
   const dispatch = useDispatch();
-  const userLogout = () => {
-    localStorage.removeItem("user");
-    dispatch(logout());
+  const {userLogout} = useLogout();
+  const ulog = () => {
+    userLogout(null);
   };
   return (
     <Navbar variant="dark" bg="dark" expand="lg">
@@ -53,7 +53,7 @@ export default function Header() {
                 </Link>
               </Nav.Link>
               <NavDropdown menuVariant="dark" variant='dark' title={user.username} id="nav-dropdown-dark-example" style={{'color':'white'}}>
-              <NavDropdown.Item onClick={userLogout}>Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={ulog}>Logout</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.4">
                 Setting
               </NavDropdown.Item>

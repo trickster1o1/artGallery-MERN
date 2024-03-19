@@ -22,12 +22,10 @@ const userSchema = new Schema({
         required: true
     }, cart: [
         {
-            product_id: String,
-            product: String,
-            price: Number,
-            quantity: Number,
-            image: String,
-            description: String
+            product_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product'
+            }
         }
     ]
 });
@@ -65,7 +63,7 @@ userSchema.statics.login = async function({email, password}) {
         return {msg: 'error', message: 'Please fill all the fields'};
     }
  
-    const user = await this.findOne({$or: [{email}, {username: email}]});
+    const user = await this.findOne({$or: [{email}, {username: email}]}).populate('cart.product_id');
     if(!user) {
         return {msg:'error', message: 'Invalid Cardantials'};
     }

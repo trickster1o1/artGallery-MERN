@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "../features/user";
+import { addCart } from "../features/cart";
 import { useDispatch } from "react-redux";
 
 export const useLogin = () => {
@@ -23,8 +24,10 @@ export const useLogin = () => {
         } 
         else {
             dispatch(login(res));
+            dispatch(addCart(res.cart));
             setError(null);
             localStorage.setItem('user', JSON.stringify(res));
+            localStorage.setItem("cart", JSON.stringify(res.cart));
         }
 
         setLoading(false);

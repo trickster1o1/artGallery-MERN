@@ -35,7 +35,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((res) => {
         if (res.error && res.error === "jwt expired") {
-          userLogout();
+          userLogout('expired');
         } else if (res.msg && res.msg === "sucess") {
           console.log("ok");
         }
@@ -145,14 +145,14 @@ export default function Home() {
                 type="hidden"
                 id="success_url"
                 name="success_url"
-                value={`${process.env.REACT_APP_URL}/order?order=success`}
+                value={`${process.env.REACT_APP_API}/api/order/${id}/${user ? user.username : 'null'}`}
                 required
               />
               <input
                 type="hidden"
                 id="failure_url"
                 name="failure_url"
-                value={`${process.env.REACT_APP_URL}/order?order=failed`}
+                value={`${process.env.REACT_APP_URL}?order=failed`}
                 required
               />
               <input

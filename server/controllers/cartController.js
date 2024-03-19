@@ -7,34 +7,21 @@ const addToCart = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(product_id)) {
     return res.status(404).json({ error: "product not found!!!" });
   }
-  const product = await Product.findOne({ _id: product_id });
 
-  if (!product) {
-    return res.status(404).json({ error: "Product not found!" });
-  }
-  const exist = await User.findOne({ _id: req.user._id }).select("cart");
-  try {
-    if (exist.cart && exist.cart.length) {
-        for (let index = 0; index < exist.cart.length; index++) {
-            if (exist.cart[index].product_id === product_id) {
-                return res.status(400).json({ error: "Already exist", exist }); 
-              }
-        }
+  let exist = await User.findOne({_id: req.user._id});
+
+  if(exist.cart && exist.cart.length) {
+    if(exist.cart.filter(c=>c.product_id == product_id).length) {
+      return res.status(400).json({error: "Product already in cart."});
     }
-  } catch (error) {
-    console.log(error);
   }
+
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
     {
       $push: {
         cart: {
-          product: product.title,
-          product_id: product._id,
-          price: product.price,
-          quantity: qty,
-          image: product.image,
-          description: product.description,
+          product_id
         },
       },
     }
@@ -44,7 +31,7 @@ const addToCart = async (req, res) => {
     return res.status(404).json({ error: "user not found!" });
   }
 
-  const cart = await User.findOne({ _id: req.user._id }).select("cart");
+  const cart = await User.findOne({ _id: req.user._id }).select("cart").populate("cart.product_id");
   res.status(200).json({ msg: "success", cart });
 };
 
@@ -72,7 +59,7 @@ const clearCart = async (req, res) => {
 };
 
 const getCarts = async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
+  const user = await User.findOne({ _id: req.user._id }).select('cart').populate('cart.product_id');
   res.status(200).json({ msg: "success", cart: user.cart });
 };
 

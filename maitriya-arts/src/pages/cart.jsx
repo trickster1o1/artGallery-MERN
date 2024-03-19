@@ -4,16 +4,21 @@ import ToasterAlert from "../components/ToasterAlert";
 import { Image } from "react-bootstrap";
 import { useRemoveCart } from "../hooks/useRemoveCart";
 import { addNotification } from "../features/notif";
+import { useEffect } from "react";
 
 export default function Cart() {
   const cart = useSelector((state) => state.cartReducer.cart);
+
+  useEffect(()=> {
+    console.log(cart);
+  }, [])
   const dispatch = useDispatch();
   const { rmvBuff, rmvCart } = useRemoveCart();
   const user = useSelector(state => state.userReducer.user);
   const getTotal = () => {
     let t = 0;
     cart.forEach((c) => {
-      t += c.price;
+      t += Number(c.product_id.price);
     });
     return t;
   };
@@ -60,12 +65,12 @@ export default function Cart() {
                   <td style={{ width: "30em" }}>
                     <figure className="figure">
                       <Image
-                        src={c.image}
+                        src={c.product_id.image}
                         className="figure-img img-fluid rounded"
                         style={{ width: "17em" }}
                       />
                       <figcaption className="figure-caption">
-                        {c.description}
+                        {c.product_id.description}
                       </figcaption>
                     </figure>
                   </td>
@@ -73,17 +78,17 @@ export default function Cart() {
                     className="text-center align-middle"
                     style={{ fontSize: "14pt" }}
                   >
-                    {c.product}
+                    {c.product_id.title}
                   </td>
                   <td className="text-end align-middle fw-bold text-danger">
-                    Npr.{c.price}
+                    Npr.{c.product_id.price}
                   </td>
                   <td className="text-end align-middle">
                     <span
                       class="material-symbols-outlined text-danger"
                       role="button"
                       title="Delete"
-                      onClick={() => rmvCart(c.product_id)}
+                      onClick={() => rmvCart(c.product_id._id)}
                     >
                       close
                     </span>
