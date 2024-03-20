@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useAddCart } from "../hooks/useAddCart";
 import ToasterAlert from "../components/ToasterAlert";
 import { useLogout } from "../hooks/useLogout";
-import {SHA256, HmacSHA256} from 'crypto-js'
+import {HmacSHA256} from 'crypto-js'
 import Base64 from 'crypto-js/enc-base64';
+import { addNotification } from "../features/notif";
 
 export default function Home() {
   const user = useSelector((state) => state.userReducer.user);
-  const nav = useSelector((state) => state.navReducer);
+  const dispatch = useDispatch();
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(false);
   const [rowA, setRowA] = useState([]);
@@ -21,7 +22,17 @@ export default function Home() {
   const navigator = useNavigate();
   const { error, buff, setCart } = useAddCart();
   const { userLogout } = useLogout();
+  const urlParams = new URLSearchParams(window.location.search);
 
+  useEffect(()=>{
+    if(urlParams.has('order')) {
+      if(urlParams.get('order') === 'success') {
+        dispatch(addNotification({ msg: "Order has been placed!", status: "success", show: true, time: Date.now() }))
+      } else {
+        dispatch(addNotification({ msg: urlParams.get('order'), status: "error", show: true, time: Date.now() }))
+      }
+    }
+  },[])
   const orderProduct = async (e, price, id) => {
     e.preventDefault();
     await fetch(`${process.env.REACT_APP_API}/api/order`, {

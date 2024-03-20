@@ -21,7 +21,6 @@ export const useAddCart = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         if (res.error) {
           setError(error);
           dispatch(addNotification({ msg: res.error, status: "error" , show: true, time: Date.now()}));
