@@ -35,7 +35,6 @@ export default function Home() {
         })
           .then((res) => res.json())
           .then((res) => {
-            console.log(res);
             dispatch(addCart(res.cart.length ? res.cart : []));
           })
           .catch((err) => console.log(err));
