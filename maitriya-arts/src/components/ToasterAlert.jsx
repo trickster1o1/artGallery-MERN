@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer, Toast } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { removeNotif } from "../features/notif";
@@ -9,9 +9,7 @@ export default function ToasterAlert() {
   );
   const dispatch = useDispatch();
     const notif = useSelector(state=>state.notifReducer.notifications);
-  useEffect(()=> {
-    console.log(notif);
-  }, []);
+
   const [show, setShow] = useState(true);
   return notifications.length ? (
     <div className="custom-toaster">

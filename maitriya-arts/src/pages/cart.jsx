@@ -4,14 +4,10 @@ import ToasterAlert from "../components/ToasterAlert";
 import { Image } from "react-bootstrap";
 import { useRemoveCart } from "../hooks/useRemoveCart";
 import { addNotification } from "../features/notif";
-import { useEffect } from "react";
 
 export default function Cart() {
   const cart = useSelector((state) => state.cartReducer.cart);
 
-  useEffect(()=> {
-    console.log(cart);
-  }, [])
   const dispatch = useDispatch();
   const { rmvBuff, rmvCart } = useRemoveCart();
   const user = useSelector(state => state.userReducer.user);

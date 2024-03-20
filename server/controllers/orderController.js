@@ -3,82 +3,82 @@ const Order = require("../models/order");
 const User = require("../models/user");
 const Product = require("../models/product");
 
+const orderProd = async (id, user, query, type) => {
+  if (!query) {
+    return { error: "Request Blocked!" };
+  }
+  const data = JSON.parse(Buffer.from(query, "base64").toString("utf-8"));
 
-const submitOrder = async (req, res) => {
-  const { id, user } = req.params;
-  if(!req.query.data) {
-    res.writeHead(301,
-      {Location: process.env.WEB+'?order=Request Blocked!'}
-    );
-    res.end();
-    return res.status(400).json({ error: "Request Blocked!" }); 
-  }
-  const data = JSON.parse(
-    Buffer.from(req.query.data, "base64").toString("utf-8")
-  );
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.writeHead(301,
-      {Location: process.env.WEB+'?order=Product not found'}
-    );
-    res.end();
-    return res.status(400).json({ error: "Product not found" });
+    return { error: "Product not found" };
   }
+
   const prod = await Product.findOne({ _id: id });
   const usr = await User.findOne({ username: user });
   if (!prod || !usr) {
-    res.writeHead(301,
-      {Location: process.env.WEB+'?order=Invalid Request!'}
-    );
-    res.end();
-    return res.status(400).json({ error: "Invalid Request!" });
+    return { error: "Invalid Request!" };
+  }
+  if (type === "product") {
+    if (usr.cart.length) {
+      const c = await User.findOneAndUpdate(
+        { _id: usr._id },
+        { $pull: { cart: { product_id: prod._id } } }
+      );
+    }
   }
 
-  if (parseFloat(prod.price) !== parseFloat(data.total_amount.replace(',',''))) {
+  if (parseFloat(prod.price) !== parseFloat(data.total_amount)) {
     const order = await Order.create({
       total_amount: data.total_amount,
       user_id: usr._id,
-      status: 'error',
-      products: [{product_id: prod._id}],
-      transaction_code: data.transaction_code
+      status: "error",
+      products: [{ product_id: prod._id }],
+      transaction_code: data.transaction_code,
     });
-    res.writeHead(301,
-      {Location: `${process.env.WEB}?order=Payment Error, actual price = ${prod.price} / payed price = ${data.total_amount}`}
-    );
-    res.end();
-    return res
-      .status(200)
-      .json({
-        error: `Payment Error, actual price = ${prod.price} / payed price = ${data.total_amount}`,
-      });
+    return {
+      error: `Payment Error, actual price = ${prod.price} / payed price = ${data.total_amount}`,
+    };
   }
+
   const order = await Order.create({
     total_amount: prod.price,
     user_id: usr._id,
-    products: [{product_id: prod._id}],
-    transaction_code: data.transaction_code
+    products: [{ product_id: prod._id }],
+    transaction_code: data.transaction_code,
   });
-  res.writeHead(301,
-    {Location: process.env.WEB+'?order=success'}
-  );
-  res.end();
+  return { msg: "success" };
+};
+
+const submitOrder = async (req, res) => {
+  const { id, user } = req.params;
+  const stats = await orderProd(id, user, req.query.data, "product");
+
+  if (stats.error) {
+    res.writeHead(301, { Location: process.env.WEB + "?order=" + stats.error });
+    res.end();
+  } else {
+    res.writeHead(301, { Location: process.env.WEB + "?order=success" });
+    res.end();
+  }
 };
 
 const getOrders = async (req, res) => {
   const uid = req.user._id;
-  const order = await Order.find({ user_id: uid }).populate('products.product_id').sort({createdAt: -1});
+  const order = await Order.find({ user_id: uid })
+    .populate("products.product_id")
+    .sort({ createdAt: -1 });
 
   res.status(200).json({ msg: "success", order });
 };
 
 const cancelOrder = async (req, res) => {
-  const {id} = req.params;
-  const order = await Order.findOneAndDelete({_id:id});
-  if(!order) {
-    return res.status(404).json({error: 'Order not found!'});
+  const { id } = req.params;
+  const order = await Order.findOneAndDelete({ _id: id });
+  if (!order) {
+    return res.status(404).json({ error: "Order not found!" });
   }
-  res.status(200).json({msg: "success", order});
-
-} 
+  res.status(200).json({ msg: "success", order });
+};
 
 const recordOrder = async (req, res) => {
   res.status(200).json({ msg: "success" });

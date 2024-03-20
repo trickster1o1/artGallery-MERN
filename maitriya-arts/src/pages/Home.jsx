@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useAddCart } from "../hooks/useAddCart";
 import ToasterAlert from "../components/ToasterAlert";
 import { useLogout } from "../hooks/useLogout";
-import {HmacSHA256} from 'crypto-js'
-import Base64 from 'crypto-js/enc-base64';
+import { HmacSHA256 } from "crypto-js";
+import Base64 from "crypto-js/enc-base64";
 import { addNotification } from "../features/notif";
+import { addCart } from "../features/cart";
 
 export default function Home() {
   const user = useSelector((state) => state.userReducer.user);
@@ -24,15 +25,44 @@ export default function Home() {
   const { userLogout } = useLogout();
   const urlParams = new URLSearchParams(window.location.search);
 
-  useEffect(()=>{
-    if(urlParams.has('order')) {
-      if(urlParams.get('order') === 'success') {
-        dispatch(addNotification({ msg: "Order has been placed!", status: "success", show: true, time: Date.now() }))
+  useEffect(() => {
+    if (urlParams.has("order")) {
+      const getCart = async () => {
+        await fetch(`${process.env.REACT_APP_API}/api/cart`, {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+            dispatch(addCart(res.cart.length ? res.cart : []));
+          })
+          .catch((err) => console.log(err));
+      };
+
+      if (urlParams.get("order") === "success") {
+        dispatch(
+          addNotification({
+            msg: "Order has been placed!",
+            status: "success",
+            show: true,
+            time: Date.now(),
+          })
+        );
+        getCart();
       } else {
-        dispatch(addNotification({ msg: urlParams.get('order'), status: "error", show: true, time: Date.now() }))
+        dispatch(
+          addNotification({
+            msg: urlParams.get("order"),
+            status: "error",
+            show: true,
+            time: Date.now(),
+          })
+        );
       }
     }
-  },[])
+  }, []);
   const orderProduct = async (e, price, id) => {
     e.preventDefault();
     await fetch(`${process.env.REACT_APP_API}/api/order`, {
@@ -46,7 +76,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((res) => {
         if (res.error && res.error === "jwt expired") {
-          userLogout('expired');
+          userLogout("expired");
         } else if (res.msg && res.msg === "sucess") {
           console.log("ok");
         }
@@ -128,7 +158,7 @@ export default function Home() {
                 type="hidden"
                 id="transaction_uuid"
                 name="transaction_uuid"
-                value={id+'-'+Date.now()}
+                value={id + "-" + Date.now()}
                 required
               />
               <input
@@ -156,7 +186,9 @@ export default function Home() {
                 type="hidden"
                 id="success_url"
                 name="success_url"
-                value={`${process.env.REACT_APP_API}/api/order/${id}/${user ? user.username : 'null'}`}
+                value={`${process.env.REACT_APP_API}/api/order/${id}/${
+                  user ? user.username : "null"
+                }`}
                 required
               />
               <input
@@ -173,7 +205,26 @@ export default function Home() {
                 value="total_amount,transaction_uuid,product_code"
                 required
               />
-              <input type="hidden" id="signature" name="signature" value={Base64.stringify(HmacSHA256("total_amount="+price+","+"transaction_uuid="+id+'-'+Date.now()+","+"product_code=EPAYTEST", "8gBm/:&EnhH.1/q"))} required />
+              <input
+                type="hidden"
+                id="signature"
+                name="signature"
+                value={Base64.stringify(
+                  HmacSHA256(
+                    "total_amount=" +
+                      price +
+                      "," +
+                      "transaction_uuid=" +
+                      id +
+                      "-" +
+                      Date.now() +
+                      "," +
+                      "product_code=EPAYTEST",
+                    "8gBm/:&EnhH.1/q"
+                  )
+                )}
+                required
+              />
               <input
                 value="Buy"
                 type="submit"
