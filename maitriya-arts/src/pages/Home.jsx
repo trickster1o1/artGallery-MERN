@@ -4,7 +4,6 @@ import { Spinner, Offcanvas } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAddCart } from "../hooks/useAddCart";
 import ToasterAlert from "../components/ToasterAlert";
-import { useLogout } from "../hooks/useLogout";
 import { HmacSHA256 } from "crypto-js";
 import Base64 from "crypto-js/enc-base64";
 import { addNotification } from "../features/notif";
@@ -21,8 +20,7 @@ export default function Home() {
   const [show, setShow] = useState(false);
   const [rating, setRating] = useState(0);
   const navigator = useNavigate();
-  const { error, buff, setCart } = useAddCart();
-  const { userLogout } = useLogout();
+  const { setCart } = useAddCart();
   const urlParams = new URLSearchParams(window.location.search);
 
   useEffect(() => {
@@ -62,27 +60,27 @@ export default function Home() {
       }
     }
   }, []);
-  const orderProduct = async (e, price, id) => {
-    e.preventDefault();
-    await fetch(`${process.env.REACT_APP_API}/api/order`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({ id, price }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.error && res.error === "jwt expired") {
-          userLogout("expired");
-        } else if (res.msg && res.msg === "sucess") {
-          console.log("ok");
-        }
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const orderProduct = async (e, price, id) => {
+  //   e.preventDefault();
+  //   await fetch(`${process.env.REACT_APP_API}/api/order`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: `Bearer ${user.token}`,
+  //     },
+  //     body: JSON.stringify({ id, price }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.error && res.error === "jwt expired") {
+  //         userLogout("expired");
+  //       } else if (res.msg && res.msg === "sucess") {
+  //         console.log("ok");
+  //       }
+  //       console.log(res);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   // const mouseOverAction = (r, status) => {
   //   if(status) {

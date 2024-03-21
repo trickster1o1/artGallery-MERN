@@ -4,12 +4,14 @@ import ToasterAlert from "../components/ToasterAlert";
 import { Image } from "react-bootstrap";
 import { useRemoveCart } from "../hooks/useRemoveCart";
 import { addNotification } from "../features/notif";
+import { HmacSHA256 } from "crypto-js";
+import Base64 from "crypto-js/enc-base64";
 
 export default function Cart() {
   const cart = useSelector((state) => state.cartReducer.cart);
 
   const dispatch = useDispatch();
-  const { rmvBuff, rmvCart } = useRemoveCart();
+  const { rmvCart } = useRemoveCart();
   const user = useSelector(state => state.userReducer.user);
   const getTotal = () => {
     let t = 0;
@@ -101,12 +103,115 @@ export default function Cart() {
                 </td>
                 <td className="text-end">
                   <span>
-                    <button
+                  <form
+              // onSubmit={(e)=>orderProduct(e,price, id)}
+              action="https://rc-epay.esewa.com.np/api/epay/main/v2/form"
+              method="POST"
+              className="d-inline"
+            >
+              <input
+                type="hidden"
+                id="amount"
+                name="amount"
+                value={getTotal()}
+                required
+              />
+              <input
+                type="hidden"
+                id="tax_amount"
+                name="tax_amount"
+                value="0"
+                required
+              />
+              <input
+                type="hidden"
+                id="total_amount"
+                name="total_amount"
+                value={getTotal()}
+                required
+              />
+              <input
+                type="hidden"
+                id="transaction_uuid"
+                name="transaction_uuid"
+                value={user.username + "-" + Date.now()}
+                required
+              />
+              <input
+                type="hidden"
+                id="product_code"
+                name="product_code"
+                value="EPAYTEST"
+                required
+              />
+              <input
+                type="hidden"
+                id="product_service_charge"
+                name="product_service_charge"
+                value="0"
+                required
+              />
+              <input
+                type="hidden"
+                id="product_delivery_charge"
+                name="product_delivery_charge"
+                value="0"
+                required
+              />
+              <input
+                type="hidden"
+                id="success_url"
+                name="success_url"
+                value={`${process.env.REACT_APP_API}/api/order/${user ? user.username : "null"}/checkout`}
+                required
+              />
+              <input
+                type="hidden"
+                id="failure_url"
+                name="failure_url"
+                value={`${process.env.REACT_APP_URL}?order=failed`}
+                required
+              />
+              <input
+                type="hidden"
+                id="signed_field_names"
+                name="signed_field_names"
+                value="total_amount,transaction_uuid,product_code"
+                required
+              />
+              <input
+                type="hidden"
+                id="signature"
+                name="signature"
+                value={Base64.stringify(
+                  HmacSHA256(
+                    "total_amount=" +
+                      getTotal() +
+                      "," +
+                      "transaction_uuid=" +
+                      user.username +
+                      "-" +
+                      Date.now() +
+                      "," +
+                      "product_code=EPAYTEST",
+                    "8gBm/:&EnhH.1/q"
+                  )
+                )}
+                required
+              />
+              <input
+                value="Checkout"
+                type="submit"
+                className="btn btn-primary"
+                style={{ width: "7em", marginBottom: "5px" }}
+              />
+            </form>
+                    {/* <button
                       className="btn btn-primary"
                       style={{ width: "7em", marginBottom: "5px" }}
                     >
                       Checkout
-                    </button>
+                    </button> */}
                     <br />
                     <button className="btn btn-danger" style={{ width: "7em" }} onClick={emptyCart}>
                       Clear

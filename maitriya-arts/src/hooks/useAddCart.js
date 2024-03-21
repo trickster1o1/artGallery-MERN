@@ -4,7 +4,6 @@ import { addNotification } from "../features/notif";
 import { useDispatch } from "react-redux";
 export const useAddCart = () => {
   const [error, setError] = useState();
-  const [buff, setBuff] = useState();
   const dispatch = useDispatch();
 
   const setCart = async (product_id, token) => {
@@ -38,5 +37,5 @@ export const useAddCart = () => {
       });
   };
 
-  return { error, setCart, buff };
+  return { error, setCart };
 };
