@@ -369,8 +369,10 @@ export default function Home() {
                 <div className="mb-2" key={key} style={{ paddingBottom: "0" }}>
                   <img
                     src={p.image}
+                    data-lazy-src={p.image}
                     alt="-"
-                    className="i-fit"
+                    className="i-fit lazy"
+                    data-lazy-placeholder="https://placehold.it/1321x583?text=Loading"
                     style={{ marginBottom: "0" }}
                     onClick={() => setShow(p._id)}
                   />

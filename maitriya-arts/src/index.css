@@ -42,4 +42,19 @@ code {
   color: #e1e1e1;
 } .star-active {
   color: yellowgreen;
+} .custom-badge {
+  display: flex;
+  position: absolute;
+  bottom: -5px;
+  right: -8px;
+  height: 20px;
+  width: 20px;
+  background-color: #FF0000;
+  font-size: 11px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-weight: bolder;
+  border: .6px solid #212529;
+  overflow: hidden;
 }
