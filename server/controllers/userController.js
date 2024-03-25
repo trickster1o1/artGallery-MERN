@@ -36,6 +36,21 @@ const userSignup = async (req, res) => {
   } catch (err) {}
 };
 
+const userUpdate = async (req, res) => {
+  const {userType} = req.body;
+  const _id = req.user._id; 
+  try {
+    const user = await User.findOneAndUpdate({_id},{$set: {userType}})
+    if(!user) {
+      return res.status(404).json({msg: 'User not found!'});
+    }
+
+    res.status(200).json({msg: 'success', user});
+  } catch (err) {
+    res.status(400).json({error: err.message});
+  }
+}
+
 const delUser = async (req, res) => {
   // const user  = await User.deleteMany({});
   res.status(200).json({ msg: "user deactivated!" });
@@ -46,4 +61,4 @@ const getUsers = async (req, res) => {
   res.status(200).json(user);
 };
 
-module.exports = { userLogin, delUser, userSignup, getUsers };
+module.exports = { userLogin, delUser, userSignup, getUsers, userUpdate };

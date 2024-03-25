@@ -3,18 +3,16 @@ import {
   Navbar,
   Form,
   Nav,
-  NavDropdown,
-  Badge,
+  NavDropdown
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../features/user";
+import { Link,  useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import art from "../assets/web.png";
 import { useLogout } from "../hooks/useLogout";
 export default function Header() {
   const user = useSelector((state) => state.userReducer.user);
   const cart = useSelector((state) => state.cartReducer.cart);
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { userLogout } = useLogout();
   const ulog = () => {
     userLogout(null);
@@ -69,25 +67,24 @@ export default function Header() {
                 id="nav-dropdown-dark-example"
                 style={{ color: "white" }}
               >
-                <NavDropdown.Item onClick={ulog}>Logout</NavDropdown.Item>
+                {/* <NavDropdown.Item><Link className="text-light text-decoration-none" to={"/orders"}>
+                  Order
+                </Link></NavDropdown.Item> */}
+                <NavDropdown.Item onClick={()=>navigate('/orders')}>
+                  Orders</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.4">Setting</NavDropdown.Item>
+                <NavDropdown.Item onClick={ulog}>Logout</NavDropdown.Item>
               </NavDropdown>
             </Nav>
           ) : (
             <Nav>
-              <Nav.Link className="text-light">
+              <Nav.Link className="text-light" onClick={()=>navigate('/login')}>
                 {" "}
-                <Link className="text-light text-decoration-none" to={"/login"}>
                   Login
-                </Link>
               </Nav.Link>
-              <Nav.Link eventKey={2} className="text-light">
-                <Link
-                  className="text-light text-decoration-none"
-                  to={"/register"}
-                >
+              <Nav.Link eventKey={2} className="text-light" onClick={()=>navigate('/register')}>
+                
                   Register
-                </Link>
               </Nav.Link>
             </Nav>
           )}
