@@ -114,7 +114,7 @@ export default function AdminPanel() {
                     <td>Rs.{product.price} </td>
                     <td>
                       <span
-                        className={`material-symbols-outlined ${
+                        className={`material-symbols-outlined user-select-none ${
                           product.status === "active"
                             ? "text-warning"
                             : "text-danger"
@@ -129,14 +129,14 @@ export default function AdminPanel() {
                     </td>
                     <td>
                       <span
-                        className="material-symbols-outlined text-primary"
+                        className="material-symbols-outlined text-primary user-select-none"
                         role="button"
                         title="Edit"
                       >
                         edit_document
                       </span>{" "}
                       <span
-                        className="material-symbols-outlined text-danger"
+                        className="material-symbols-outlined text-danger user-select-none"
                         role="button"
                         title="Delete"
                       >
