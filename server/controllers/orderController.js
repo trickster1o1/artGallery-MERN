@@ -98,6 +98,16 @@ const getOrders = async (req, res) => {
   res.status(200).json({ msg: "success", order });
 };
 
+const allOrders = async (req,res) => {
+  const _id = req.user._id;
+  const user = await User.findOne({_id})
+  if(user.userType !== 'admin') {
+    return res.status(400).json({error: 'Unauthorized'});
+  }
+  const orders = await Order.find({});
+  res.status(200).json(orders)
+}
+
 const cancelOrder = async (req, res) => {
   const { id } = req.params;
   const order = await Order.findOneAndDelete({ _id: id });
@@ -111,4 +121,4 @@ const recordOrder = async (req, res) => {
   res.status(200).json({ msg: "success" });
 };
 
-module.exports = { submitOrder, recordOrder,checkout, getOrders, cancelOrder };
+module.exports = { submitOrder, recordOrder,checkout, allOrders, getOrders, cancelOrder };
