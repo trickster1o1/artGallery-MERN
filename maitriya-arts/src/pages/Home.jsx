@@ -13,7 +13,7 @@ export default function Home() {
   const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
   const [products, setProducts] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [rowA, setRowA] = useState([]);
   const [rowB, setRowB] = useState([]);
   const [rowC, setRowC] = useState([]);
@@ -321,7 +321,6 @@ export default function Home() {
   let j = 1;
   useEffect(() => {
     const getProducts = async () => {
-      setLoading(true);
       await fetch("http://localhost:4000/api/product")
         .then((res) => res.json())
         .then((res) => {

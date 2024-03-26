@@ -53,9 +53,6 @@ export default function Header() {
                 <Link className="text-light text-decoration-none" to={"/cart"} style={{position: 'relative'}} title="Cart">
                   <span class="material-symbols-outlined">shopping_bag</span>{" "}
                   {cart.length ? (
-                    // <Badge bg="danger"
-                    //   style={{display:'inline-block', marginLeft:'-1em', marginTop:'=2em'}}
-                    // >{cart.length}</Badge>
                     <span className="custom-badge">{cart.length}</span>
                   ) : null}
                 </Link>
@@ -70,6 +67,8 @@ export default function Header() {
                 {/* <NavDropdown.Item><Link className="text-light text-decoration-none" to={"/orders"}>
                   Order
                 </Link></NavDropdown.Item> */}
+                {user.userType === 'admin' ? <NavDropdown.Item onClick={()=>navigate('/admin')}>
+                  Adminpanel</NavDropdown.Item> : null}
                 <NavDropdown.Item onClick={()=>navigate('/orders')}>
                   Orders</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.4">Setting</NavDropdown.Item>

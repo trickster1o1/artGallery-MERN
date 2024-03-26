@@ -41,22 +41,40 @@ export default function Order() {
                   key={index}
                   as="li"
                   className="d-flex justify-content-between align-items-start pt-4 pb-4"
-                  style={
-                    o.status === "error" ? { border: "1px solid red" } : null
-                  }
                   onClick={() =>
                     setOpen((opn) => (opn === o._id ? "0" : o._id))
                   }
                   aria-controls={`${o._id}`}
                   aria-expanded={open === o._id ? true : false}
                 >
-                  <div className="ms-2 me-auto">
+                  <div className="ms-2 me-auto" style={{ width: "75%" }}>
                     <div className="fw-bold">{o._id}</div>
                     <Collapse in={open === o._id ? true : false}>
-                      <ul id={`${o._id}`}>
+                      <ul id={`${o._id}`} className="order-list">
                         {o.products.map((product, index) => (
-                          <li key={"p-" + index}>{product.product_id.title}</li>
+                          <li key={"p-" + index}>
+                            <span>
+                              <img src={product.product_id.image} alt="" />{" "}
+                              <br />
+                              <figcaption className="figure-caption">
+                                {product.product_id.title}
+                              </figcaption> <br />
+                              
+                              <figcaption className="figure-caption">
+                                {new Date(product.product_id.createdAt).toDateString()}
+                              </figcaption>
+                            </span>
+                            <ul>
+                              <li className="text-danger">Rs.{product.product_id.price}</li>
+                            </ul>
+                          </li>
                         ))}
+                        {o.products.length > 1 || o.status === 'error' ?
+                          <li>
+                            <span><b>Total</b></span>
+                            <span><b className="text-danger">Rs.{o.total_amount}</b></span>
+                          </li>
+                        : null}
                       </ul>
                     </Collapse>
                   </div>
@@ -72,7 +90,7 @@ export default function Order() {
                     title={o.status.toUpperCase()}
                     style={{ cursor: "pointer" }}
                   >
-                    14
+                    {o.products.length}
                   </Badge>
                 </ListGroup.Item>
               ))

@@ -7,6 +7,8 @@ import Uploads from "./pages/upload";
 import Register from "./pages/register";
 import Cart from "./pages/cart";
 import Order from "./pages/Order";
+import Error404 from "./pages/error404";
+import AdminPanel from "./pages/Admin";
 
 function App() {
   const user = useSelector((state)=>state.userReducer.user);
@@ -21,6 +23,10 @@ function App() {
           <Route path="/orders" element={user ? <Order /> : <Navigate to='/login' />} />
           <Route path="/login" element={!user ? <Login /> : <Navigate to='/' />} />
           <Route path="/register" element={!user ? <Register /> : <Navigate to='/' />} />
+          <Route path="/admin" element={!user ? <Navigate to='/login' /> : user.userType !== 'admin' ? <Navigate to='/' /> : <AdminPanel />} />
+
+
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </div>
     </BrowserRouter>
