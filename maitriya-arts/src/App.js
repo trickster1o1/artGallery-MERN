@@ -9,6 +9,7 @@ import Cart from "./pages/cart";
 import Order from "./pages/Order";
 import Error404 from "./pages/error404";
 import AdminPanel from "./pages/Admin";
+import ToasterAlert from "./components/ToasterAlert";
 
 function App() {
   const user = useSelector((state)=>state.userReducer.user);
@@ -16,6 +17,8 @@ function App() {
     <BrowserRouter>
     <Header />
       <div className="container pt-4">
+      <ToasterAlert />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<Uploads />} />

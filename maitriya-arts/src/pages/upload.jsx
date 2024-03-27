@@ -34,7 +34,7 @@ export default function Uploads() {
         </div>
       ) : null}
       <form
-        action="http://localhost:4000/api/product/upload"
+        action="http://localhost:4000/api/product/123/update"
         method="post"
         encType="multipart/form-data"
       >

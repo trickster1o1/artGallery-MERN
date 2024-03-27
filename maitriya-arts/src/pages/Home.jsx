@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Spinner, Offcanvas } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAddCart } from "../hooks/useAddCart";
-import ToasterAlert from "../components/ToasterAlert";
 import { HmacSHA256 } from "crypto-js";
 import Base64 from "crypto-js/enc-base64";
 import { addNotification } from "../features/notif";
@@ -352,7 +351,6 @@ export default function Home() {
 
   return (
     <div>
-      <ToasterAlert />
       {loading ? (
         <div>
           <Spinner animation="grow" variant="dark" />

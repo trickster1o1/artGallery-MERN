@@ -80,4 +80,8 @@ code {
   align-items: center;
 } .err img {
   width: 50%;
+} .input-txt {
+  border: none;
+  outline: none;
+  resize: none;
 }

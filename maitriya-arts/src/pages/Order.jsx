@@ -33,9 +33,9 @@ export default function Order() {
         </Spinner>
       ) : (
         <>
-          <h2 className="mb-4">Orders</h2>
+          {orders && orders.length ? <h2 className="mb-4">Orders</h2> : null}
           <ListGroup as="ol" numbered>
-            {orders ? (
+            {orders && orders.length ? (
               orders.map((o, index) => (
                 <ListGroup.Item
                   key={index}
@@ -95,7 +95,7 @@ export default function Order() {
                 </ListGroup.Item>
               ))
             ) : (
-              <h2>You have no orders yet.</h2>
+              <h2 className="text-center">You have no orders yet.</h2>
             )}
           </ListGroup>
         </>
