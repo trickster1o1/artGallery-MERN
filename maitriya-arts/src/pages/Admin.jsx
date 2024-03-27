@@ -66,26 +66,27 @@ export default function AdminPanel() {
 
   const urlParams = new URLSearchParams(window.location.search);
   useEffect(() => {
-    
-    if (urlParams.get("update") === "success") {
-      console.log('xiryo');
-      dispatch(
-        addNotification({
-          msg: "Product has been updated",
-          status: "success",
-          show: true,
-          time: Date.now(),
-        })
-      );
-    } else {
-      dispatch(
-        addNotification({
-          msg: 'Updates failed!!!',
-          status: "error",
-          show: true,
-          time: Date.now(),
-        })
-      );
+    if (urlParams.get("update")) {
+      if (urlParams.get("update") === "success") {
+        console.log("xiryo");
+        dispatch(
+          addNotification({
+            msg: "Product has been updated",
+            status: "success",
+            show: true,
+            time: Date.now(),
+          })
+        );
+      } else {
+        dispatch(
+          addNotification({
+            msg: "Updates failed!!!",
+            status: "error",
+            show: true,
+            time: Date.now(),
+          })
+        );
+      }
     }
   }, []);
 
@@ -239,7 +240,11 @@ export default function AdminPanel() {
                     action={`${process.env.REACT_APP_API}/api/product/${data._id}/update`}
                     method="post"
                     encType="multipart/form-data"
-                    style={{width:'100%',display:'flex','justifyContent':'space-between'}}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
                     <input type="hidden" value={data.title} name="title" />
                     <input type="hidden" value={data.price} name="price" />
