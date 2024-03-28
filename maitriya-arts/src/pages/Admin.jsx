@@ -11,6 +11,7 @@ export default function AdminPanel() {
   const [orders, setOrders] = useState(null);
   const [buffer, setBuffer] = useState(true);
   const [modalShow, setModalShow] = useState(false);
+  const [reRender, setReRender] = useState(0);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     title: "",
@@ -24,7 +25,11 @@ export default function AdminPanel() {
   const navigate = useNavigate();
   useEffect(() => {
     const getUsers = async () => {
-      await fetch(`${process.env.REACT_APP_API}/api/user`)
+      await fetch(`${process.env.REACT_APP_API}/api/users`, {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      })
         .then((res) => res.json())
         .then((res) => {
           setUsers(res);
@@ -33,7 +38,11 @@ export default function AdminPanel() {
     };
 
     const getProducts = async () => {
-      await fetch(`${process.env.REACT_APP_API}/api/product`)
+      await fetch(`${process.env.REACT_APP_API}/api/products`, {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      })
         .then((res) => res.json())
         .then((res) => {
           setProducts(res);
@@ -42,7 +51,7 @@ export default function AdminPanel() {
     };
 
     const getOrders = async () => {
-      await fetch(`${process.env.REACT_APP_API}/api/order/admin`, {
+      await fetch(`${process.env.REACT_APP_API}/api/orders`, {
         headers: {
           authorization: `Bearer ${user.token}`,
         },
@@ -62,7 +71,8 @@ export default function AdminPanel() {
     };
 
     getOrders();
-  }, []);
+    console.log('rendered');
+  }, [reRender]);
 
   const urlParams = new URLSearchParams(window.location.search);
   useEffect(() => {
@@ -95,6 +105,26 @@ export default function AdminPanel() {
     setModalShow(true);
   };
 
+  const updateProdStatus = async (status, id) => {
+    await fetch(`${process.env.REACT_APP_API}/api/product/status`, {
+      method: "POST",
+      body: JSON.stringify({
+        id,
+        status: status !== "active" ? "active" : "inactive",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${user.token}`
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res.msg) {
+          setReRender(r=>r+1);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       <Tabs
@@ -165,6 +195,9 @@ export default function AdminPanel() {
                           }`}
                           role="button"
                           title={product.status.toUpperCase()}
+                          onClick={() =>
+                            updateProdStatus(product.status, product._id)
+                          }
                         >
                           {product.status === "active"
                             ? "check_circle"

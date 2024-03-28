@@ -13,7 +13,7 @@ const orderProd = async (id, user, query, type) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return { error: "Product not found" };
     }
-    prod = await Product.findOne({ _id: id });
+    prod = await Product.findOne({ _id: id, status: 'active' });
   }
   const usr = await User.findOne({ username: user }).populate('cart.product_id');
   if (type === "product") {
@@ -57,7 +57,15 @@ const orderProd = async (id, user, query, type) => {
     transaction_code: data.transaction_code,
   });
 
+  if(type === 'product') {
+    const p = await Product.findOneAndUpdate({_id: prod._id}, {$set: {status: 'sold'}});
+  }
+
   if(type === 'cart') {
+    let p = null;
+    usr.cart.forEach(async (crt) => {
+      p = await Product.findOneAndUpdate({_id:crt.product_id._id},{$set:{status: 'sold'}});
+    });
     const c = await User.findOneAndUpdate({_id:usr._id}, {cart: []});
   }
   return { msg: "success" };
@@ -98,16 +106,6 @@ const getOrders = async (req, res) => {
   res.status(200).json({ msg: "success", order });
 };
 
-const allOrders = async (req,res) => {
-  const _id = req.user._id;
-  const user = await User.findOne({_id})
-  if(user.userType !== 'admin') {
-    return res.status(400).json({error: 'Unauthorized'});
-  }
-  const orders = await Order.find({});
-  res.status(200).json(orders)
-}
-
 const cancelOrder = async (req, res) => {
   const { id } = req.params;
   const order = await Order.findOneAndDelete({ _id: id });
@@ -121,4 +119,4 @@ const recordOrder = async (req, res) => {
   res.status(200).json({ msg: "success" });
 };
 
-module.exports = { submitOrder, recordOrder,checkout, allOrders, getOrders, cancelOrder };
+module.exports = { submitOrder, recordOrder,checkout, getOrders, cancelOrder };

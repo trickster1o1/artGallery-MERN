@@ -304,7 +304,7 @@ export default function Home() {
             </div>
             {reviews.length ? (
               <div>
-                <span className="font-weight-bold">Reviews</span> <br />
+                <b>Reviews</b> <br />
                 {reviews.map((r, index) => (
                   <div key={"r_" + index}>{r.review}</div>
                 ))}

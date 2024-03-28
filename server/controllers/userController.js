@@ -56,9 +56,4 @@ const delUser = async (req, res) => {
   res.status(200).json({ msg: "user deactivated!" });
 };
 
-const getUsers = async (req, res) => {
-  const user = await User.find({});
-  res.status(200).json(user);
-};
-
-module.exports = { userLogin, delUser, userSignup, getUsers, userUpdate };
+module.exports = { userLogin, delUser, userSignup, userUpdate };
