@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { TweenMax, Power2, TimelineLite } from "gsap";
 import CSSRulePlugin from "gsap/CSSRulePlugin";
-import {gsap} from 'gsap';
-import ScrollTrigger  from "gsap/ScrollTrigger";
+import { gsap } from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 export default function Uploads() {
   gsap.registerPlugin(ScrollTrigger);
@@ -34,26 +34,31 @@ export default function Uploads() {
     tl.to(imgReveal, 1.4, { width: "0%", ease: Power2.easeInOut }).to(
       imgRef,
       1.4,
-      { scale: 1, ease: Power2.easeInOut,delay:-1.5}
+      { scale: 1, ease: Power2.easeInOut, delay: -1.5 }
     );
   }, []);
 
-  useEffect(()=> {
-    scrollRef.current.forEach(element => {
-      gsap.to(element, {
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 55%',
-          end: 'center 55%',
-          // markers: true,
-          // toggleClass: 'tog-img'
-          // toggleActions: "restart reverse restart reverse"
-        },
-        y: -25,
-        duration: 1,
-        opacity: 1,
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      scrollRef.current.forEach((element) => {
+        gsap.from(element, {
+          scrollTrigger: {
+            trigger: element,
+            start: "top 55%",
+            end: "center 55%",
+            // markers: true,
+            // toggleClass: 'tog-img'
+            // toggleActions: "restart reverse restart reverse"
+          },
+          y: -25,
+          duration: 1,
+          opacity: 0,
+          ease: 'power2.inOut'
+        });
+      });
     });
-    });
+
+    return () => ctx.revert();
   }, []);
   return (
     <div>
@@ -102,54 +107,68 @@ export default function Uploads() {
         />
       </div>
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-        
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-        
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-        
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-        
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-        
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-        
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
       <img
-          src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
-          alt="-"
-          className="s-ani"
-          ref={el=>{scrollRef.current.push(el)}}
-        /> <br /> <br />
-
+        src="https://i.ytimg.com/vi/dXM6i5-sdVg/maxresdefault.jpg"
+        alt="-"
+        className="s-ani"
+        ref={(el) => {
+          scrollRef.current.push(el);
+        }}
+      />{" "}
+      <br /> <br />
     </div>
   );
 }
