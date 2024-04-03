@@ -60,6 +60,26 @@ export default function Uploads() {
 
     return () => ctx.revert();
   }, []);
+
+  useEffect(()=> {
+    
+
+    let ctx = gsap.context(()=> {
+      let tm = gsap.timeline({
+        scrollTrigger: {
+          trigger:'.sq-box',
+          markers: true,
+          start: 'top 90%',
+          toggleActions: 'restart none none none',
+          ease:'power2.inOut'
+        }
+      });
+      tm.from('.sq-box', {x:400, duration:4}).from('.sq-box-blue', {x:400, opacity:0, duration:2, delay:-2});
+    }); 
+    
+    return ()=>ctx.revert();
+
+  }, [])
   return (
     <div>
       {uploadStatus ? (
@@ -169,6 +189,10 @@ export default function Uploads() {
         }}
       />{" "}
       <br /> <br />
+
+
+      <div className="sq-box"></div>
+      <div className="sq-box-blue"></div>
     </div>
   );
 }

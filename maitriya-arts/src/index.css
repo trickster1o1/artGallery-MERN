@@ -111,3 +111,15 @@ code {
 /* .s-ani {
   opacity: 0;
 } */
+
+.sq-box {
+  width: 125px;
+  height: 125px;
+  background-color: green;
+  margin: 15em 0;
+}.sq-box-blue {
+  width: 125px;
+  height: 125px;
+  background-color: blue;
+  margin: 15em 0;
+}
