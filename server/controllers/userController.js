@@ -36,10 +36,10 @@ const userSignup = async (req, res) => {
 };
 
 const userUpdate = async (req, res) => {
-  const {userType} = req.body;
+  const {name, phone} = req.body;
   const _id = req.user._id; 
   try {
-    const user = await User.findOneAndUpdate({_id},{$set: {userType}})
+    const user = await User.findOneAndUpdate({_id},{$set: {name, phone}})
     if(!user) {
       return res.status(404).json({msg: 'User not found!'});
     }
@@ -50,9 +50,22 @@ const userUpdate = async (req, res) => {
   }
 }
 
+const getData = async (req, res) => {
+  const _id = req.user._id;
+  try {
+    const user = await User.findOne({_id});
+    if(!user) {
+      return res.status(404).json({error: 'user not found'});
+    }
+    res.status(200).json(user);
+  } catch(err) {
+    res.status(400).json({error: err.message});
+  }
+}
+
 const delUser = async (req, res) => {
   // const user  = await User.deleteMany({});
   res.status(200).json({ msg: "user deactivated!" });
 };
 
-module.exports = { userLogin, delUser, userSignup, userUpdate };
+module.exports = { userLogin, delUser, userSignup, userUpdate, getData };

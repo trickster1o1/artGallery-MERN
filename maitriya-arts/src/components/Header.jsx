@@ -71,7 +71,7 @@ export default function Header() {
                   Adminpanel</NavDropdown.Item> : null}
                 <NavDropdown.Item onClick={()=>navigate('/orders')}>
                   Orders</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4">Setting</NavDropdown.Item>
+                <NavDropdown.Item onClick={()=>navigate('/setting')}>Setting</NavDropdown.Item>
                 <NavDropdown.Item onClick={ulog}>Logout</NavDropdown.Item>
               </NavDropdown>
             </Nav>

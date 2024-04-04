@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../features/notif";
+import { useLogout } from "../hooks/useLogout";
 
 export default function AdminPanel() {
   const [users, setUsers] = useState(null);
@@ -13,6 +14,7 @@ export default function AdminPanel() {
   const [modalShow, setModalShow] = useState(false);
   const [reRender, setReRender] = useState(0);
   const dispatch = useDispatch();
+  const {userLogout} = useLogout();
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -59,6 +61,9 @@ export default function AdminPanel() {
         .then((res) => res.json())
         .then((res) => {
           if (res.error) {
+            if(res.error === 'jwt expired') {
+              userLogout("expired");
+            }
             navigate("/");
           } else {
             getUsers();
